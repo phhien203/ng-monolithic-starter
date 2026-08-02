@@ -36,6 +36,16 @@ ng build
 
 This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
 
+## Analyzing the bundle
+
+To create a production build and open an interactive bundle-size report, run:
+
+```bash
+pnpm analyze
+```
+
+The generated report is stored at `dist/ng-monolithic-starter/bundle-analysis.html`.
+
 ## Running unit tests
 
 To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
