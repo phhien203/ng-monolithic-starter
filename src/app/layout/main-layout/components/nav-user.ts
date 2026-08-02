@@ -12,7 +12,7 @@ import { HlmAvatarImports } from '@spartan-ng/helm/avatar';
 import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu';
 import { HlmSidebarImports, HlmSidebarService } from '@spartan-ng/helm/sidebar';
 
-import { SidebarUser } from '../models/sidebar-data';
+import { SidebarUser } from '@layout/main-layout/models/sidebar-data';
 
 @Component({
   selector: 'app-nav-user',

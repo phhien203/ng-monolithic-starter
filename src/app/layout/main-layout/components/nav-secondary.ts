@@ -4,7 +4,7 @@ import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideLifeBuoy, lucideSend } from '@ng-icons/lucide';
 import { HlmSidebarImports } from '@spartan-ng/helm/sidebar';
 
-import { SidebarNavigationItem } from '../models/sidebar-data';
+import { SidebarNavigationItem } from '@layout/main-layout/models/sidebar-data';
 
 @Component({
   selector: 'app-nav-secondary',

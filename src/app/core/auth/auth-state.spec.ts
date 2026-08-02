@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { AuthState } from './auth-state';
+import { AuthState } from '@core/auth/auth-state';
 
 describe('AuthState', () => {
   let service: AuthState;

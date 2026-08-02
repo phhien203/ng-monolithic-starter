@@ -16,7 +16,7 @@ import {
 } from '@angular/router';
 import * as Sentry from '@sentry/angular';
 
-import { ConfigService } from './config/config';
+import { ConfigService } from '@core/config/config';
 
 export interface CoreOptions {
   routes: Routes;
@@ -37,8 +37,6 @@ export function provideCore({ routes }: CoreOptions) {
         scrollPositionRestoration: 'enabled',
       }),
     ),
-
-    // other 3rd party libraries providers like NgRx, provideStore()
     {
       provide: ErrorHandler,
       useValue: Sentry.createErrorHandler(),

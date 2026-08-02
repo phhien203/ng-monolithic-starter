@@ -6,11 +6,11 @@ import { HlmBreadcrumbImports } from '@spartan-ng/helm/breadcrumb';
 import { HlmSeparatorImports } from '@spartan-ng/helm/separator';
 import { HlmSidebarImports } from '@spartan-ng/helm/sidebar';
 
-import { NavMain } from './components/nav-main';
-import { NavProjects } from './components/nav-projects';
-import { NavSecondary } from './components/nav-secondary';
-import { NavUser } from './components/nav-user';
-import { sidebarData } from './models/sidebar-data';
+import { NavMain } from '@layout/main-layout/components/nav-main';
+import { NavProjects } from '@layout/main-layout/components/nav-projects';
+import { NavSecondary } from '@layout/main-layout/components/nav-secondary';
+import { NavUser } from '@layout/main-layout/components/nav-user';
+import { sidebarData } from '@layout/main-layout/models/sidebar-data';
 
 @Component({
   selector: 'app-main-layout',

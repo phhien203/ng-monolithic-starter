@@ -11,7 +11,7 @@ import {
 import { HlmCollapsibleImports } from '@spartan-ng/helm/collapsible';
 import { HlmSidebarImports } from '@spartan-ng/helm/sidebar';
 
-import { SidebarNavigationItem } from '../models/sidebar-data';
+import { SidebarNavigationItem } from '@layout/main-layout/models/sidebar-data';
 
 @Component({
   selector: 'app-nav-main',

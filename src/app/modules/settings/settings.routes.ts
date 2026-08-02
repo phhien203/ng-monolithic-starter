@@ -9,7 +9,9 @@ export default [
         path: '',
         title: 'General Settings',
         loadComponent: () =>
-          import('./general-settings/general-settings').then((m) => m.GeneralSettings),
+          import('@modules/settings/general-settings/general-settings').then(
+            (m) => m.GeneralSettings,
+          ),
       },
     ],
   },

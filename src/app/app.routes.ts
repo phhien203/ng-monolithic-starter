@@ -8,10 +8,10 @@ export const routes: Routes = [
   // },
   {
     path: 'products',
-    loadChildren: () => import('./modules/products/products.routes'),
+    loadChildren: () => import('@modules/products/products.routes'),
   },
   {
     path: 'settings',
-    loadChildren: () => import('./modules/settings/settings.routes'),
+    loadChildren: () => import('@modules/settings/settings.routes'),
   },
 ];

@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ConfigService } from './config';
+import { ConfigService } from '@core/config/config';
 
 describe('ConfigService', () => {
   let service: ConfigService;

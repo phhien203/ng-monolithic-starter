@@ -9,7 +9,9 @@ export default [
         path: '',
         title: 'Product Management',
         loadComponent: () =>
-          import('./product-management/product-management').then((m) => m.ProductManagement),
+          import('@modules/products/product-management/product-management').then(
+            (m) => m.ProductManagement,
+          ),
       },
     ],
   },

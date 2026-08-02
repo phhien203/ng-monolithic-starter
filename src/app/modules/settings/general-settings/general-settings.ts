@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import * as Sentry from '@sentry/angular';
 
-import { GeneralSettingsApi } from './api/general-settings.api';
+import { GeneralSettingsApi } from '@modules/settings/general-settings/api/general-settings.api';
 
 @Component({
   selector: 'app-general-settings',

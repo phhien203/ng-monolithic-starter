@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 
-import { ConfigService } from '../../../../core/config/config';
+import { ConfigService } from '@core/config/config';
 
 @Injectable()
 export class GeneralSettingsApi {

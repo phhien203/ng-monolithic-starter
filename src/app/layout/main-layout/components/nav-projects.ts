@@ -13,7 +13,7 @@ import {
 import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu';
 import { HlmSidebarImports, HlmSidebarService } from '@spartan-ng/helm/sidebar';
 
-import { SidebarProject } from '../models/sidebar-data';
+import { SidebarProject } from '@layout/main-layout/models/sidebar-data';
 
 @Component({
   selector: 'app-nav-projects',
