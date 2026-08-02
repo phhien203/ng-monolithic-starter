@@ -63,7 +63,9 @@ import { sidebarData } from '@layout/main-layout/models/sidebar-data';
       <main hlmSidebarInset>
         <header class="flex h-16 shrink-0 items-center gap-2">
           <div class="flex items-center gap-2 px-4">
-            <button hlmSidebarTrigger type="button"></button>
+            <button hlmSidebarTrigger type="button">
+              <span class="sr-only">Toggle Sidebar</span>
+            </button>
             <hlm-separator orientation="vertical" class="mr-2 data-[orientation=vertical]:h-4" />
             <nav hlmBreadcrumb aria-label="Breadcrumb">
               <ol hlmBreadcrumbList>
