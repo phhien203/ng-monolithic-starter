@@ -1,13 +1,11 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { HlmButtonImports } from '@spartan-ng/helm/button';
+import { Component } from '@angular/core';
+
+import { MainLayout } from './layout/main-layout/main-layout';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, HlmButtonImports],
-  templateUrl: './app.html',
+  imports: [MainLayout],
   styleUrl: './app.css',
+  template: `<app-main-layout />`,
 })
-export class App {
-  protected readonly title = signal('ng-monolithic-starter');
-}
+export class App {}
