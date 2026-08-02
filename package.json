@@ -7,8 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "format": "prettier --write \"src/**/*.{ts,html,css,json}\" \"libs/**/*.{ts,html,css,json}\" package.json angular.json components.json tsconfig*.json README.md .prettierrc",
-    "format:check": "prettier --check \"src/**/*.{ts,html,css,json}\" \"libs/**/*.{ts,html,css,json}\" package.json angular.json components.json tsconfig*.json README.md .prettierrc"
+    "format": "prettier --write \"src/**/*.{ts,html,css,json}\" package.json angular.json components.json tsconfig*.json README.md .prettierrc",
+    "format:check": "prettier --check \"src/**/*.{ts,html,css,json}\" package.json angular.json components.json tsconfig*.json README.md .prettierrc"
   },
   "private": true,
   "packageManager": "pnpm@11.5.2",
