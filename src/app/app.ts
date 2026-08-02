@@ -6,6 +6,6 @@ import { MainLayout } from './layout/main-layout/main-layout';
   selector: 'app-root',
   imports: [MainLayout],
   styleUrl: './app.css',
-  template: `<app-main-layout />`,
+  template: ` <app-main-layout /> `,
 })
 export class App {}

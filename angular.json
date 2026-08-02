@@ -40,6 +40,9 @@
                   "maximumError": "8kB"
                 }
               ],
+              "sourceMap": {
+                "scripts": true
+              },
               "outputHashing": "all"
             },
             "development": {

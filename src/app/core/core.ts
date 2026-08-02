@@ -1,5 +1,12 @@
-import { provideBrowserGlobalErrorListeners, provideEnvironmentInitializer } from '@angular/core';
 import {
+  ErrorHandler,
+  inject,
+  provideAppInitializer,
+  provideBrowserGlobalErrorListeners,
+  provideEnvironmentInitializer,
+} from '@angular/core';
+import {
+  Router,
   Routes,
   provideRouter,
   withComponentInputBinding,
@@ -7,6 +14,7 @@ import {
   withInMemoryScrolling,
   withRouterConfig,
 } from '@angular/router';
+import * as Sentry from '@sentry/angular';
 
 export interface CoreOptions {
   routes: Routes;
@@ -29,6 +37,17 @@ export function provideCore({ routes }: CoreOptions) {
     ),
 
     // other 3rd party libraries providers like NgRx, provideStore()
+    {
+      provide: ErrorHandler,
+      useValue: Sentry.createErrorHandler(),
+    },
+    {
+      provide: Sentry.TraceService,
+      deps: [Router],
+    },
+    provideAppInitializer(() => {
+      inject(Sentry.TraceService);
+    }),
 
     // other application-specific providers and setup
 
