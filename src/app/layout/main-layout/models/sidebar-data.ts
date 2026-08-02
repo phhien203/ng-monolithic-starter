@@ -57,11 +57,11 @@ export const sidebarData: {
       ],
     },
     {
-      title: 'Documentation',
+      title: 'Products',
       url: '.',
       icon: 'lucideBookOpen',
       items: [
-        { title: 'Introduction', url: '.' },
+        { title: 'Product Management', url: '/products' },
         { title: 'Get Started', url: '.' },
         { title: 'Tutorials', url: '.' },
         { title: 'Changelog', url: '.' },
@@ -72,7 +72,7 @@ export const sidebarData: {
       url: '.',
       icon: 'lucideSettings2',
       items: [
-        { title: 'General', url: '.' },
+        { title: 'General', url: '/settings' },
         { title: 'Team', url: '.' },
         { title: 'Billing', url: '.' },
         { title: 'Limits', url: '.' },
