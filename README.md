@@ -46,6 +46,28 @@ pnpm analyze
 
 The generated report is stored at `dist/ng-monolithic-starter/bundle-analysis.html`.
 
+## Analyzing source dependencies
+
+To render the full visual source dependency graph, run:
+
+```bash
+pnpm deps:graph
+```
+
+`deps:graph` is an alias for `deps:graph:all`. Use the scoped commands to generate smaller graphs that include the selected scope and its immediate dependencies:
+
+```bash
+pnpm deps:graph:all
+pnpm deps:graph:modules
+pnpm deps:graph:core
+pnpm deps:graph:layout
+pnpm deps:graph:shared
+```
+
+The scoped commands generate matching `dependency-graph-<scope>.svg` files in `dist/`. The copied UI components are collapsed into one node per component.
+
+SVG rendering requires the Graphviz `dot` command. TypeScript resolution and graph scope are configured in `.dependency-cruiser.cjs`.
+
 ## Running unit tests
 
 To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
