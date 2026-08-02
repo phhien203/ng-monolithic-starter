@@ -1,9 +1,9 @@
 import {
   ErrorHandler,
+  Injector,
   inject,
   provideAppInitializer,
   provideBrowserGlobalErrorListeners,
-  provideEnvironmentInitializer,
 } from '@angular/core';
 import {
   Router,
@@ -15,6 +15,8 @@ import {
   withRouterConfig,
 } from '@angular/router';
 import * as Sentry from '@sentry/angular';
+
+import { ConfigService } from './config/config';
 
 export interface CoreOptions {
   routes: Routes;
@@ -45,16 +47,31 @@ export function provideCore({ routes }: CoreOptions) {
       provide: Sentry.TraceService,
       deps: [Router],
     },
-    provideAppInitializer(() => {
-      inject(Sentry.TraceService);
-    }),
+    provideAppInitializer(async () => {
+      const configService = inject(ConfigService);
+      const injector = inject(Injector);
 
-    // other application-specific providers and setup
-
-    // perform initialization, has to be last
-    provideEnvironmentInitializer(() => {
-      // add init logic here...
-      // kickstart processes, trigger initial requests or actions, ...
+      return configService.load().then(() => {
+        initializeSentry(configService);
+        injector.get(Sentry.TraceService);
+      });
     }),
   ];
+}
+
+function initializeSentry(configService: ConfigService): void {
+  if (!configService.sentryDSN) {
+    return;
+  }
+
+  Sentry.init({
+    dsn: configService.sentryDSN,
+    dataCollection: {},
+    integrations: [Sentry.browserTracingIntegration(), Sentry.replayIntegration()],
+    tracesSampleRate: 1.0,
+    tracePropagationTargets: ['localhost', configService.apiBaseURL],
+    replaysSessionSampleRate: 0.1,
+    replaysOnErrorSampleRate: 1.0,
+    enableLogs: true,
+  });
 }
