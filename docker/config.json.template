@@ -1,0 +1,4 @@
+{
+  "sentryDSN": "${SENTRY_DSN}",
+  "apiBaseURL": "${API_BASE_URL}"
+}

@@ -1,0 +1,14 @@
+.angular
+.git
+.github
+.idea
+.vscode
+coverage
+dist
+node_modules
+tmp
+
+*.log
+.DS_Store
+.env
+.env.*

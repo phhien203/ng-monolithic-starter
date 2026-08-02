@@ -1,0 +1,4 @@
+#!/bin/sh
+
+export SENTRY_DSN="${SENTRY_DSN:-}"
+export API_BASE_URL="${API_BASE_URL:-/api}"
