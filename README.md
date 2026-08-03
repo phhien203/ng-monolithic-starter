@@ -103,6 +103,8 @@ pnpm test           # Run unit tests
 pnpm lint           # Run ESLint and module-boundary checks
 pnpm format         # Format project files
 pnpm format:check   # Check formatting without changing files
+pnpm verify:quick   # Run lint and unit tests while iterating
+pnpm verify         # Run the complete CI quality gate
 ```
 
 Application-wide state uses NgRx Signal Store. The root-provided `AuthState` in
@@ -114,6 +116,24 @@ Generate Angular code with the CLI, for example:
 ```bash
 pnpm ng generate component component-name
 ```
+
+## Agent workflow
+
+`AGENTS.md` is the entry point for coding agents. It documents the architecture, Angular and
+spartan/ui conventions, validation expectations, and definition of done. Scoped instruction files
+under `src/app` add rules for feature modules, core infrastructure, layout, and the project-owned UI
+system.
+
+The products feature is a reference slice for lazy route loading, explicit loading/success/empty/error
+view states, accessible spartan/ui composition, and component/router testing. Before handing off a
+change, run the same deterministic quality gate as CI:
+
+```bash
+pnpm verify
+```
+
+The checked-in MCP configuration uses the exact local Angular and spartan MCP dependencies through
+pnpm, so component and framework discovery does not float to an unreviewed package version.
 
 ## spartan/ui
 
@@ -274,12 +294,7 @@ For local development, `public/config.json` supplies the same defaults. These va
 
 ## GitHub Actions workflow
 
-`.github/workflows/ci.yml` runs on pushes and pull requests targeting `main`, and can also be started manually. It uses Node 24 and the locked pnpm version, installs from `pnpm-lock.yaml`, then runs:
-
-1. `pnpm format:check`
-2. `pnpm lint`
-3. `pnpm test --no-watch`
-4. `pnpm build`
+`.github/workflows/ci.yml` runs on pushes and pull requests targeting `main`, and can also be started manually. It uses Node 24 and the locked pnpm version, installs from `pnpm-lock.yaml`, then runs `pnpm verify`. This command checks formatting and linting, runs unit tests once, and creates the production build.
 
 The workflow has read-only repository permissions, a 15-minute timeout, and concurrency cancellation so an outdated run for the same branch does not consume CI time. It verifies the application but does not publish or deploy the Docker image; deployment can be added separately for the chosen hosting platform.
 

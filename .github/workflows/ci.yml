@@ -35,14 +35,5 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Check formatting
-        run: pnpm format:check
-
-      - name: Lint
-        run: pnpm lint
-
-      - name: Run unit tests
-        run: pnpm test --no-watch
-
-      - name: Build production application
-        run: pnpm build
+      - name: Verify repository
+        run: pnpm verify
