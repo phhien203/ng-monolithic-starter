@@ -4,6 +4,8 @@ import { fileURLToPath } from 'node:url';
 
 const templateName = 'ng-monolithic-starter';
 const templateTitle = 'Angular Monolithic Starter';
+const templateRepositoryUrl = 'https://github.com/phhien203/ng-monolithic-starter';
+const templateRepositoryUrlPlaceholder = '__TEMPLATE_REPOSITORY_URL__';
 const templateOnlySection = /<!-- TEMPLATE-ONLY:START -->[\s\S]*?<!-- TEMPLATE-ONLY:END -->\n*/;
 const projectNamePattern = /^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/;
 
@@ -69,7 +71,14 @@ function replaceTemplateTitle(contents) {
 }
 
 function updateReadme(contents) {
-  return replaceTemplateTitle(replaceTemplateName(contents)).replace(templateOnlySection, '');
+  const protectedContents = contents.replaceAll(
+    templateRepositoryUrl,
+    templateRepositoryUrlPlaceholder,
+  );
+
+  return replaceTemplateTitle(replaceTemplateName(protectedContents))
+    .replaceAll(templateRepositoryUrlPlaceholder, templateRepositoryUrl)
+    .replace(templateOnlySection, '');
 }
 
 function toTitleCase(value) {

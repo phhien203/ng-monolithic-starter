@@ -6,13 +6,25 @@ An opinionated Angular 22 starter for building a modular monolith. It includes a
 
 ## Create a project from this template
 
-This repository is configured as a GitHub template. Select **Use this template** on GitHub, or create and clone a repository with the GitHub CLI:
+This repository is configured as a GitHub template. If the GitHub CLI is installed, create and
+clone a repository with:
 
 ```bash
 gh repo create my-new-app \
   --template phhien203/ng-monolithic-starter \
   --private \
   --clone
+cd my-new-app
+```
+
+Without the GitHub CLI, open
+[phhien203/ng-monolithic-starter](https://github.com/phhien203/ng-monolithic-starter) on GitHub,
+select **Use this template → Create a new repository**, choose the repository name and visibility,
+and select **Create repository**. Then copy the new repository's URL from its **Code** menu and clone
+it with Git:
+
+```bash
+git clone https://github.com/YOUR_GITHUB_USERNAME/my-new-app.git
 cd my-new-app
 ```
 
@@ -28,6 +40,48 @@ The initializer updates `package.json`, `angular.json`, Docker build paths, the 
 
 Repository owners can enable template mode under **Settings → General → Template repository**. See GitHub's [template repository documentation](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-template-repository) for access and repository-creation options.
 <!-- TEMPLATE-ONLY:END -->
+
+## Update a project from this template
+
+GitHub does not keep a Git relationship between a template repository and repositories created
+from it. Add this repository as a `template` remote once so that future template changes can be
+merged into the project.
+
+For a newly created project, establish the relationship before running `template:init`, while its
+files still match the template:
+
+```bash
+git remote add template https://github.com/phhien203/ng-monolithic-starter.git
+git fetch template
+git merge template/main --allow-unrelated-histories
+```
+
+The `--allow-unrelated-histories` option is needed only for this first merge. Afterward, initialize
+the application with `pnpm template:init`, then commit the project-specific changes.
+
+To bring later template changes into the project, create a synchronization branch and merge the
+latest template version:
+
+```bash
+git switch main
+git pull --ff-only origin main
+git switch -c chore/sync-template
+git fetch template
+git merge template/main
+```
+
+Resolve conflicts carefully so that application-specific names, configuration, and features are
+preserved. Then install the locked dependencies and run the full quality gate:
+
+```bash
+pnpm install --frozen-lockfile
+pnpm verify
+git push -u origin chore/sync-template
+```
+
+Review and merge the synchronization branch through a pull request. If the project was already
+initialized before adding the `template` remote, use `--allow-unrelated-histories` for its first
+template merge and expect to resolve conflicts in files changed by `template:init`.
 
 ## What is included
 
