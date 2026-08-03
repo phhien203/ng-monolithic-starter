@@ -44,6 +44,30 @@ Repository owners can enable template mode under **Settings → General → Temp
 | Docker with runtime environment | Produces an nginx image whose public configuration is injected when the container starts.                           |
 | GitHub Actions                  | Checks formatting, linting, unit tests, and the production build on pushes and pull requests.                       |
 
+## Architecture tradeoffs
+
+This starter uses a modular-monolith architecture: the application is built and deployed as one Angular application, while features are separated by explicit, lint-enforced dependency boundaries.
+
+### Pros
+
+- **Simple delivery and operations:** one application, build pipeline, runtime configuration, and deployment artifact are easier to operate than multiple independently deployed frontends.
+- **Clear feature ownership:** feature code is colocated under `src/app/modules/<feature>`, and cross-feature imports are prohibited to reduce accidental coupling.
+- **Low-cost code sharing:** features can reuse application-wide services, domain-neutral components, and UI primitives without package publishing or version coordination.
+- **Atomic changes:** updates that span several features, shared code, and routing can be implemented, tested, and released together.
+- **Incremental scalability:** lazy-loaded routes and enforced dependency directions allow the codebase and team to grow without introducing distributed-system overhead prematurely.
+- **Straightforward local development:** developers run and debug the complete application in one workspace with a consistent toolchain.
+
+### Cons
+
+- **Coupled releases:** every change is shipped through the same pipeline, so features cannot be independently versioned, deployed, or rolled back.
+- **Shared failure domain:** a build failure, dependency upgrade, or runtime regression can affect the whole application.
+- **Repository growth:** builds, tests, dependency graphs, and developer navigation can become slower as the application and copied UI catalog expand.
+- **Boundary discipline is still required:** lint rules constrain imports, but they cannot prevent all coupling through shared state, APIs, naming conventions, or overly broad `core` and `common` modules.
+- **Shared-code pressure:** reusable code can accumulate in common areas without a clear owner, making those areas harder to change safely.
+- **Limited team autonomy at scale:** teams share framework versions, dependencies, CI capacity, and release timing; organizations needing independent delivery may eventually prefer separately deployed applications or micro-frontends.
+
+This architecture is a strong fit when features belong to one product, benefit from coordinated releases, and can share an Angular stack. It is less suitable when teams require independent deployment, separate technology choices, or strict runtime isolation.
+
 ## Requirements
 
 - Node.js 24
