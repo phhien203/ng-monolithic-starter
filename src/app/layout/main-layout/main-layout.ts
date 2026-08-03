@@ -10,6 +10,7 @@ import { NavMain } from '@layout/main-layout/components/nav-main';
 import { NavProjects } from '@layout/main-layout/components/nav-projects';
 import { NavSecondary } from '@layout/main-layout/components/nav-secondary';
 import { NavUser } from '@layout/main-layout/components/nav-user';
+import { ThemeSwitch } from '@layout/main-layout/components/theme-switch/theme-switch';
 import { sidebarData } from '@layout/main-layout/models/sidebar-data';
 
 @Component({
@@ -22,6 +23,7 @@ import { sidebarData } from '@layout/main-layout/models/sidebar-data';
     NavProjects,
     NavSecondary,
     NavUser,
+    ThemeSwitch,
     NgIcon,
     RouterLink,
     RouterOutlet,
@@ -61,8 +63,8 @@ import { sidebarData } from '@layout/main-layout/models/sidebar-data';
       </hlm-sidebar>
 
       <main hlmSidebarInset>
-        <header class="flex h-16 shrink-0 items-center gap-2">
-          <div class="flex items-center gap-2 px-4">
+        <header class="flex h-16 shrink-0 items-center justify-between gap-2 px-4">
+          <div class="flex items-center gap-2">
             <button hlmSidebarTrigger type="button">
               <span class="sr-only">Toggle Sidebar</span>
             </button>
@@ -79,6 +81,7 @@ import { sidebarData } from '@layout/main-layout/models/sidebar-data';
               </ol>
             </nav>
           </div>
+          <app-theme-switch />
         </header>
 
         <section class="flex flex-1 flex-col p-4" aria-label="Page content">
