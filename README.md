@@ -7,6 +7,7 @@ An opinionated Angular 22 starter for building a modular monolith. It includes a
 | Part                            | Purpose                                                                                                             |
 | ------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
 | Angular 22                      | Standalone Angular application using the modern application builder, router, Vitest, and strict TypeScript tooling. |
+| NgRx Signal Store               | Signal-based application state with a typed, root-provided authentication store.                                    |
 | spartan/ui                      | Accessible UI primitives and project-owned styled components, integrated with Tailwind CSS 4.                       |
 | Sentry                          | Runtime-configured error reporting, tracing, session replay, logs, and metrics for the browser application.         |
 | Bundle analyzer                 | Generates an interactive HTML report from Angular build statistics with `esbuild-visualizer`.                       |
@@ -52,6 +53,10 @@ pnpm lint           # Run ESLint and module-boundary checks
 pnpm format         # Format project files
 pnpm format:check   # Check formatting without changing files
 ```
+
+Application-wide state uses NgRx Signal Store. The root-provided `AuthState` in
+`src/app/core/auth/auth-state.ts` exposes the current `user`, the derived
+`isAuthenticated` signal, and `setUser`/`clearUser` methods.
 
 Generate Angular code with the CLI, for example:
 

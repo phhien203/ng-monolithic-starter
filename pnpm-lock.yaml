@@ -35,6 +35,9 @@ importers:
       '@ng-icons/lucide':
         specifier: 32.5.0
         version: 32.5.0
+      '@ngrx/signals':
+        specifier: 22.0.0-beta.0
+        version: 22.0.0-beta.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2)
       '@sentry/angular':
         specifier: 10.69.0
         version: 10.69.0(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(@angular/router@22.1.0(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(@angular/platform-browser@22.1.0(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2)))(rxjs@7.8.2))(rxjs@7.8.2)
@@ -1806,6 +1809,15 @@ packages:
 
   '@ng-icons/lucide@32.5.0':
     resolution: {integrity: sha512-oLIkz2tB4ZnO3JoLQ8pS15AaR7kxBpF81s/e3mGALqNXSu2U2u0TgiP88CF/4DQ14ONFD7S/gT4Ej4gIESvbeQ==}
+
+  '@ngrx/signals@22.0.0-beta.0':
+    resolution: {integrity: sha512-Z2oXQD7qIHkg/EgbW6eOm16/Dn8svPht8h75sG42znI8TW1lycS7n3KigCbqLFFkRMSKRqvTCpGXA7Esc2JXAw==}
+    peerDependencies:
+      '@angular/core': ^22.0.0
+      rxjs: ^6.5.3 || ^7.4.0
+    peerDependenciesMeta:
+      rxjs:
+        optional: true
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -8477,6 +8489,13 @@ snapshots:
   '@ng-icons/lucide@32.5.0':
     dependencies:
       tslib: 2.8.1
+
+  '@ngrx/signals@22.0.0-beta.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2)':
+    dependencies:
+      '@angular/core': 22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2)
+      tslib: 2.8.1
+    optionalDependencies:
+      rxjs: 7.8.2
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
