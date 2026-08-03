@@ -220,7 +220,9 @@ pnpm deps:graph:layout
 pnpm deps:graph:shared
 ```
 
-Each command writes `dist/dependency-graph-<scope>.svg`. The copied UI sources are collapsed into one node per component to keep the graph readable. TypeScript resolution and graph scope are configured in `.dependency-cruiser.cjs`; SVG rendering requires the Graphviz `dot` command.
+Each command writes `deps/dependency-graph-<scope>.svg`. These generated graphs are committed to the repository so architecture changes remain visible in review. The copied UI sources are collapsed into one node per component to keep the graph readable. TypeScript resolution and graph scope are configured in `.dependency-cruiser.cjs`; SVG rendering requires the Graphviz `dot` command.
+
+![Source dependency graph](deps/dependency-graph-all.svg)
 
 ## Pre-commit checks
 
