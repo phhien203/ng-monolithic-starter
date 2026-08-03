@@ -123,6 +123,50 @@ pnpm analyze
 
 The generated report is stored at `dist/ng-monolithic-starter/bundle-analysis.html`.
 
+## Module boundaries
+
+ESLint enforces the module architecture defined in [`boundaries.config.js`](./boundaries.config.js). Both static and dynamic TypeScript imports are checked. Any dependency direction not listed below is rejected.
+
+| Importing type | Path                         | May import                               |
+| -------------- | ---------------------------- | ---------------------------------------- |
+| `main`         | Top-level files in `src/`    | `app`                                    |
+| `app`          | Files directly in `src/app/` | `app`, `core`, `layout`, `feature`       |
+| `core`         | `src/app/core/`              | `core`                                   |
+| `ui`           | `src/app/shared/ui/`         | `ui`                                     |
+| `layout`       | `src/app/layout/`            | `layout`, `common`, `core`, `ui`         |
+| `common`       | `src/app/common/`            | `common`, `core`, `ui`                   |
+| `feature`      | `src/app/modules/<feature>/` | The same feature, `common`, `core`, `ui` |
+
+Arrows in the following diagram mean “may import”:
+
+```mermaid
+flowchart LR
+  main["main<br/>src/"] --> app["app<br/>src/app/"]
+
+  app --> core["core<br/>src/app/core/"]
+  app --> layout["layout<br/>src/app/layout/"]
+  app --> feature["feature<br/>src/app/modules/&lt;feature&gt;/"]
+
+  layout --> common["common<br/>src/app/common/"]
+  layout --> core
+  layout --> ui["ui<br/>src/app/shared/ui/"]
+
+  feature --> common
+  feature --> core
+  feature --> ui
+
+  common --> core
+  common --> ui
+```
+
+Imports within `app`, `core`, `ui`, `layout`, and `common` are allowed. A feature may import only files belonging to that same feature; direct cross-feature imports are forbidden. Move code shared by multiple features into `common`, `core`, or `ui`, according to its responsibility.
+
+Run the boundary checks with:
+
+```bash
+pnpm lint
+```
+
 ## Analyzing source dependencies
 
 To render the full visual source dependency graph, run:

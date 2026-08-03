@@ -1,6 +1,7 @@
 {
   "name": "ng-monolithic-starter",
   "version": "0.0.0",
+  "type": "module",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -54,6 +55,8 @@
     "dependency-cruiser": "18.1.0",
     "esbuild-visualizer": "0.7.0",
     "eslint": "10.8.0",
+    "eslint-import-resolver-typescript": "4.4.5",
+    "eslint-plugin-boundaries": "7.1.0",
     "jsdom": "28.1.0",
     "postcss": "8.5.25",
     "prettier": "3.9.6",

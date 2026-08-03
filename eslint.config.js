@@ -1,10 +1,11 @@
-// @ts-check
-const eslint = require('@eslint/js');
-const { defineConfig } = require('eslint/config');
-const tseslint = require('typescript-eslint');
-const angular = require('angular-eslint');
+import eslint from '@eslint/js';
+import angular from 'angular-eslint';
+import { defineConfig } from 'eslint/config';
+import tseslint from 'typescript-eslint';
 
-module.exports = defineConfig([
+import boundariesConfig from './boundaries.config.js';
+
+export default defineConfig([
   {
     files: ['**/*.ts'],
     extends: [
@@ -12,6 +13,7 @@ module.exports = defineConfig([
       tseslint.configs.recommended,
       tseslint.configs.stylistic,
       angular.configs.tsRecommended,
+      boundariesConfig,
     ],
     processor: angular.processInlineTemplates,
     rules: {

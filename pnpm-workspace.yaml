@@ -6,3 +6,4 @@ allowBuilds:
   lmdb: false
   msgpackr-extract: false
   nx: true
+  unrs-resolver: false
