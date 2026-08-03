@@ -2,6 +2,33 @@
 
 An opinionated Angular 22 starter for building a modular monolith. It includes a customizable UI system, enforced module boundaries, bundle and dependency analysis, local quality gates, containerized runtime configuration, and continuous integration.
 
+<!-- TEMPLATE-ONLY:START -->
+
+## Create a project from this template
+
+This repository is configured as a GitHub template. Select **Use this template** on GitHub, or create and clone a repository with the GitHub CLI:
+
+```bash
+gh repo create my-new-app \
+  --template phhien203/ng-monolithic-starter \
+  --private \
+  --clone
+cd my-new-app
+```
+
+Initialize the copied workspace before installing dependencies. The first argument is the lowercase kebab-case package and Angular project name. The optional second argument is the human-readable application title; when omitted, it is derived from the project name.
+
+```bash
+pnpm template:init my-new-app "My New App"
+pnpm install
+pnpm start
+```
+
+The initializer updates `package.json`, `angular.json`, Docker build paths, the browser title, and this README. It can only run once. Commit the initialized files as the first application-specific commit.
+
+Repository owners can enable template mode under **Settings → General → Template repository**. See GitHub's [template repository documentation](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-template-repository) for access and repository-creation options.
+<!-- TEMPLATE-ONLY:END -->
+
 ## What is included
 
 | Part                            | Purpose                                                                                                             |

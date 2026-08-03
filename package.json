@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "ng": "ng",
+    "template:init": "node scripts/init-template.mjs",
     "start": "ng serve",
     "build": "ng build",
     "analyze": "ng build --stats-json && esbuild-visualizer --metadata dist/ng-monolithic-starter/stats.json --filename dist/ng-monolithic-starter/bundle-analysis.html --open",
@@ -15,8 +16,8 @@
     "deps:graph:shared": "mkdir -p dist && depcruise src/app --config .dependency-cruiser.cjs --output-type dot --collapse '^src/app/shared/ui/[^/]+' --focus '^src/app/shared/' --focus-depth 1 --prefix '../' | dot -T svg -o dist/dependency-graph-shared.svg",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "format": "prettier --write \"src/**/*.{ts,html,css,json}\" .dependency-cruiser.cjs package.json angular.json components.json tsconfig*.json README.md .prettierrc",
-    "format:check": "prettier --check \"src/**/*.{ts,html,css,json}\" .dependency-cruiser.cjs package.json angular.json components.json tsconfig*.json README.md .prettierrc",
+    "format": "prettier --write \"src/**/*.{ts,html,css,json}\" \"scripts/**/*.mjs\" .dependency-cruiser.cjs package.json angular.json components.json tsconfig*.json README.md .prettierrc",
+    "format:check": "prettier --check \"src/**/*.{ts,html,css,json}\" \"scripts/**/*.mjs\" .dependency-cruiser.cjs package.json angular.json components.json tsconfig*.json README.md .prettierrc",
     "lint": "ng lint",
     "prepare": "husky"
   },
