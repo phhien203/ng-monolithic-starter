@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 
 import { ProductManagement } from '@modules/products/product-management/product-management';
@@ -8,12 +8,15 @@ describe('product routes', () => {
   it('lazy-loads the product management page', async () => {
     TestBed.configureTestingModule({
       providers: [
-        provideRouter([
-          {
-            path: 'products',
-            loadChildren: () => import('@modules/products/products.routes'),
-          },
-        ]),
+        provideRouter(
+          [
+            {
+              path: 'products',
+              loadChildren: () => import('@modules/products/products.routes'),
+            },
+          ],
+          withComponentInputBinding(),
+        ),
       ],
     });
     const harness = await RouterTestingHarness.create();

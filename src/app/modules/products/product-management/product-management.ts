@@ -68,7 +68,10 @@ const initialState: ProductManagementState = { status: 'success', products: [] }
   `,
 })
 export class ProductManagement {
-  public readonly state = input<ProductManagementState>(initialState);
+  public readonly state = input<ProductManagementState, ProductManagementState | undefined>(
+    initialState,
+    { transform: (state) => state ?? initialState },
+  );
 
   protected readonly loadingPlaceholders = [1, 2] as const;
 
