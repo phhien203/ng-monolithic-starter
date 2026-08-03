@@ -1,131 +1,106 @@
-# NgMonolithicStarter
+# Angular Monolithic Starter
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.1.2.
+An opinionated Angular 22 starter for building a modular monolith. It includes a customizable UI system, enforced module boundaries, bundle and dependency analysis, local quality gates, containerized runtime configuration, and continuous integration.
 
-## Development server
+## What is included
 
-To start a local development server, run:
+| Part                            | Purpose                                                                                                             |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| Angular 22                      | Standalone Angular application using the modern application builder, router, Vitest, and strict TypeScript tooling. |
+| spartan/ui                      | Accessible UI primitives and project-owned styled components, integrated with Tailwind CSS 4.                       |
+| Sentry                          | Runtime-configured error reporting, tracing, session replay, logs, and metrics for the browser application.         |
+| Bundle analyzer                 | Generates an interactive HTML report from Angular build statistics with `esbuild-visualizer`.                       |
+| Dependency graph analyzer       | Renders full or scoped source dependency graphs with dependency-cruiser and Graphviz.                               |
+| Module boundaries               | Enforces the modular-monolith dependency rules with ESLint during local development and CI.                         |
+| Pre-commit hook                 | Runs ESLint and Prettier on staged files with Husky and lint-staged.                                                |
+| Docker with runtime environment | Produces an nginx image whose public configuration is injected when the container starts.                           |
+| GitHub Actions                  | Checks formatting, linting, unit tests, and the production build on pushes and pull requests.                       |
 
-```bash
-ng serve
-```
+## Requirements
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- Node.js 24
+- pnpm 11.5.2, as declared by the `packageManager` field in `package.json`
+- Graphviz when generating dependency graph SVGs
+- Docker when building or running the production container
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+Install dependencies and start the development server:
 
 ```bash
-ng build
+pnpm install
+pnpm start
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Open `http://localhost:4200`. The development server reloads when source files change.
 
-## Running with Docker
+## Angular 22
 
-Build the production image:
+The starter uses Angular 22.1 and Angular CLI 22.1.2. It is structured as a standalone application and includes:
+
+- Angular Router with lazy-loaded feature routes
+- Vitest through Angular's unit-test builder
+- Angular ESLint, including template accessibility rules
+- production bundle budgets and source maps
+- Prettier with Tailwind CSS class sorting
+
+Common commands:
 
 ```bash
-docker build -t ng-monolithic-starter .
+pnpm start          # Start the development server
+pnpm build          # Create a production build in dist/
+pnpm test           # Run unit tests
+pnpm lint           # Run ESLint and module-boundary checks
+pnpm format         # Format project files
+pnpm format:check   # Check formatting without changing files
 ```
 
-Run the Angular app with nginx, inject its runtime configuration, and open `http://localhost:8080`:
+Generate Angular code with the CLI, for example:
 
 ```bash
-docker run --rm -p 8080:80 \
-  -e API_BASE_URL=https://api.example.com \
-  -e SENTRY_DSN=https://examplePublicKey@o0.ingest.sentry.io/0 \
-  ng-monolithic-starter
+pnpm ng generate component component-name
 ```
 
-At container startup, the image generates `/usr/share/nginx/html/config.json` from `API_BASE_URL` and `SENTRY_DSN`. If omitted, they default to `/api` and an empty string, matching `public/config.json` used by the local development server. These values are public browser configuration and must not contain credentials or other secrets.
+## spartan/ui
 
-You can also load the values from an environment file:
+[spartan/ui](https://www.spartan.ng/) is chosen because it combines accessible behavior with full ownership of the visual implementation:
+
+- **Brain** (`@spartan-ng/brain`) supplies accessible, headless Angular primitives and interaction behavior.
+- **Helm** supplies styled components that are copied into `src/app/shared/ui`, rather than hidden inside a package. The application can change their markup, variants, and styles without wrapping or forking a third-party component library.
+- Tailwind CSS 4, semantic design tokens, and CSS variables make application-wide theming explicit and easy to adapt, including dark mode.
+- Components remain idiomatic Angular directives and components, while accessibility-heavy behavior stays maintained by the library.
+
+The starter includes the spartan component catalog under `src/app/shared/ui`. Its configuration is stored in `components.json`, using the `@spartan-ng/helm` import alias and the Mira style.
+
+Add or inspect components through the Angular CLI integration:
 
 ```bash
-docker run --rm -p 8080:80 --env-file .env.production ng-monolithic-starter
+pnpm ng generate @spartan-ng/cli:info --json
+pnpm ng generate @spartan-ng/cli:ui --name=dialog
+pnpm ng generate @spartan-ng/cli:healthcheck
 ```
 
-The nginx configuration supports Angular client-side routing, so directly opening a nested route falls back to `index.html`.
+Because Helm source is project-owned, changes inside `src/app/shared/ui` are intentional application code. Prefer composing the existing components and their variants before creating replacements.
 
-### Runtime configuration in GitHub Actions
+## Sentry observability
 
-Do not commit or build a real `.env` file into the image. The Docker image is environment-independent; `API_BASE_URL` and `SENTRY_DSN` are injected when the container starts and nginx uses them to generate `config.json`.
+The starter integrates `@sentry/angular` in the core application providers. When a Sentry DSN is configured, it enables:
 
-Create a GitHub deployment environment such as `production` under **Settings → Environments**, then add these environment variables:
+- Angular global error reporting through Sentry's `ErrorHandler`;
+- Angular Router instrumentation through `TraceService`;
+- browser performance tracing, with propagation to the configured API base URL;
+- session replay, sampling 10% of normal sessions and 100% of sessions containing an error;
+- structured logs and custom metrics.
 
-```text
-API_BASE_URL=https://api.example.com
-SENTRY_DSN=https://examplePublicKey@o0.ingest.sentry.io/0
-```
+Sentry initializes only after `/config.json` has loaded. Set `SENTRY_DSN` when starting the Docker container to enable it for that environment; leave the value empty to disable event collection. The DSN is public browser configuration, not a secret.
 
-These values are exposed in the browser through `config.json`, so they must not contain credentials or other secrets. Keep private deployment credentials in GitHub Actions secrets instead.
+The current starter uses a `tracesSampleRate` of `1.0`, which captures every transaction. Review tracing and replay sample rates before using the application at production scale.
 
-A deployment job can pass the GitHub environment variables directly to Docker:
+Production builds generate JavaScript source maps in preparation for readable Sentry stack traces. The included GitHub Actions workflow does not currently create Sentry releases or upload those source maps. Add that deployment step with a private `SENTRY_AUTH_TOKEN`, organization, and project configuration when the application has a Sentry project; never expose the auth token through runtime `config.json`.
 
-```yaml
-deploy:
-  runs-on: self-hosted
-  environment: production
-  env:
-    API_BASE_URL: ${{ vars.API_BASE_URL }}
-    SENTRY_DSN: ${{ vars.SENTRY_DSN }}
-    IMAGE: ghcr.io/${{ github.repository }}:${{ github.sha }}
-  steps:
-    - name: Run application
-      run: |
-        docker pull "$IMAGE"
-        docker run --detach \
-          --name ng-monolithic-starter \
-          --publish 8080:80 \
-          --env API_BASE_URL \
-          --env SENTRY_DSN \
-          "$IMAGE"
-```
-
-With Docker Compose, declare the variables without values so Compose forwards them from the workflow environment:
-
-```yaml
-services:
-  app:
-    image: ${IMAGE}
-    ports:
-      - '8080:80'
-    environment:
-      API_BASE_URL:
-      SENTRY_DSN:
-```
-
-The committed `.env.example` documents the supported variables for local development. Actual values should come from GitHub environment variables, GitHub secrets where appropriate, or the deployment platform.
-
-## Analyzing the bundle
-
-To create a production build and open an interactive bundle-size report, run:
-
-```bash
-pnpm analyze
-```
-
-The generated report is stored at `dist/ng-monolithic-starter/bundle-analysis.html`.
+The general settings feature includes a test action that emits a log and metric before throwing a captured error. Use it to validate a configured Sentry project, then replace or remove it when adapting the starter for a real application.
 
 ## Module boundaries
 
-ESLint enforces the module architecture defined in [`boundaries.config.js`](./boundaries.config.js). Both static and dynamic TypeScript imports are checked. Any dependency direction not listed below is rejected.
+ESLint enforces the modular architecture defined in `boundaries.config.js`. Static and dynamic TypeScript imports are checked, and dependency directions not explicitly allowed are rejected.
 
 | Importing type | Path                         | May import                               |
 | -------------- | ---------------------------- | ---------------------------------------- |
@@ -137,7 +112,7 @@ ESLint enforces the module architecture defined in [`boundaries.config.js`](./bo
 | `common`       | `src/app/common/`            | `common`, `core`, `ui`                   |
 | `feature`      | `src/app/modules/<feature>/` | The same feature, `common`, `core`, `ui` |
 
-Arrows in the following diagram mean “may import”:
+Arrows mean “may import”:
 
 ```mermaid
 flowchart LR
@@ -159,23 +134,27 @@ flowchart LR
   common --> ui
 ```
 
-Imports within `app`, `core`, `ui`, `layout`, and `common` are allowed. A feature may import only files belonging to that same feature; direct cross-feature imports are forbidden. Move code shared by multiple features into `common`, `core`, or `ui`, according to its responsibility.
+A feature may import only files belonging to that same feature; direct cross-feature imports are forbidden. Move code shared by multiple features into `common`, `core`, or `ui`, according to its responsibility. Run the checks with `pnpm lint`.
 
-Run the boundary checks with:
+## Bundle analysis
+
+Create a production build and open an interactive bundle-size report:
 
 ```bash
-pnpm lint
+pnpm analyze
 ```
 
-## Analyzing source dependencies
+The report is written to `dist/ng-monolithic-starter/bundle-analysis.html`. Use it to identify large application chunks and dependencies, and use the production budgets in `angular.json` as the CI safety net.
 
-To render the full visual source dependency graph, run:
+## Source dependency graphs
+
+Generate a visual graph of source imports:
 
 ```bash
 pnpm deps:graph
 ```
 
-`deps:graph` is an alias for `deps:graph:all`. Use the scoped commands to generate smaller graphs that include the selected scope and its immediate dependencies:
+`deps:graph` is an alias for `deps:graph:all`. Scoped commands include the selected area and its immediate dependencies:
 
 ```bash
 pnpm deps:graph:all
@@ -185,28 +164,80 @@ pnpm deps:graph:layout
 pnpm deps:graph:shared
 ```
 
-The scoped commands generate matching `dependency-graph-<scope>.svg` files in `dist/`. The copied UI components are collapsed into one node per component.
+Each command writes `dist/dependency-graph-<scope>.svg`. The copied UI sources are collapsed into one node per component to keep the graph readable. TypeScript resolution and graph scope are configured in `.dependency-cruiser.cjs`; SVG rendering requires the Graphviz `dot` command.
 
-SVG rendering requires the Graphviz `dot` command. TypeScript resolution and graph scope are configured in `.dependency-cruiser.cjs`.
+## Pre-commit checks
 
-## Running unit tests
+The `prepare` script installs a Husky pre-commit hook during `pnpm install`. Before a commit is created, the hook runs `pnpm exec lint-staged`:
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+- staged TypeScript and HTML files are fixed with ESLint and formatted with Prettier;
+- staged JavaScript, JSON, CSS, SCSS, and Markdown files are formatted with Prettier;
+- a commit is stopped if a staged-file check cannot be fixed or still fails.
 
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+Run the equivalent whole-project checks before opening a pull request with:
 
 ```bash
-ng e2e
+pnpm format:check
+pnpm lint
+pnpm test --no-watch
+pnpm build
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Docker and runtime environment
 
-## Additional Resources
+The multi-stage `Dockerfile` builds the application with Node 24 and serves the production output from nginx. It includes an HTTP health check, immutable caching for hashed CSS and JavaScript assets, and an `index.html` fallback for Angular client-side routes.
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Build and run the image:
+
+```bash
+docker build -t ng-monolithic-starter .
+docker run --rm -p 8080:80 \
+  -e API_BASE_URL=https://api.example.com \
+  -e SENTRY_DSN=https://examplePublicKey@o0.ingest.sentry.io/0 \
+  ng-monolithic-starter
+```
+
+Open `http://localhost:8080`.
+
+The image is environment-independent. At container startup, nginx substitutes environment values into `/usr/share/nginx/html/config.json`; the Angular application loads that file before startup. Supported variables are documented in `.env.example`:
+
+| Variable       | Default | Description                                        |
+| -------------- | ------- | -------------------------------------------------- |
+| `API_BASE_URL` | `/api`  | Public base URL used for API requests.             |
+| `SENTRY_DSN`   | Empty   | Public Sentry DSN used by the browser application. |
+
+You can load them from a file:
+
+```bash
+docker run --rm -p 8080:80 --env-file .env.production ng-monolithic-starter
+```
+
+For local development, `public/config.json` supplies the same defaults. These values are sent to the browser and must never contain credentials or other secrets. Keep private deployment credentials in the target platform's secret store.
+
+## GitHub Actions workflow
+
+`.github/workflows/ci.yml` runs on pushes and pull requests targeting `main`, and can also be started manually. It uses Node 24 and the locked pnpm version, installs from `pnpm-lock.yaml`, then runs:
+
+1. `pnpm format:check`
+2. `pnpm lint`
+3. `pnpm test --no-watch`
+4. `pnpm build`
+
+The workflow has read-only repository permissions, a 15-minute timeout, and concurrency cancellation so an outdated run for the same branch does not consume CI time. It verifies the application but does not publish or deploy the Docker image; deployment can be added separately for the chosen hosting platform.
+
+## Project layout
+
+```text
+src/app/
+├── core/       # Singleton application infrastructure and cross-cutting services
+├── common/     # Reusable application code shared by features and layouts
+├── layout/     # Application shells and layout composition
+├── modules/    # Independently routed business features
+└── shared/ui/  # Project-owned spartan Helm components
+```
+
+## Further reading
+
+- [Angular documentation](https://angular.dev/)
+- [Angular CLI reference](https://angular.dev/tools/cli)
+- [spartan/ui documentation](https://www.spartan.ng/)
